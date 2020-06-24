@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">FootVLG</string>
+    <string name="loginButton">Connexion</string>
+    <string name="registerButton">S\'enregistrer</string>
+    <string name="loginText">Login</string>
+    <string name="RegisterText">Inscription</string>
+    <string name="EmailText">Email</string>
+    <string name="PasswordText">Mot de passe</string>
+    <string name="last_nameText">Nom</string>
+    <string name="first_nameText">Prénom</string>
+    <string name="phone_numberText">Numéro de téléphone</string>
+    <string name="birthdayText">Date de naissance (dd/mm/YYYY)</string>
+    <string name="confirm_PasswordText">Répéter le mot de passe</string>
+    <string name="Validate">Valider</string>
+    <string name="back">Retour</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
