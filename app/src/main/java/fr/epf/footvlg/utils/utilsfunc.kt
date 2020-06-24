@@ -1,6 +1,7 @@
 package fr.epf.footvlg.utils
 
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.room.Room
 import fr.epf.footvlg.BDD.AppDatabase
 import fr.epf.footvlg.BDD.DAO.UserDAO
@@ -27,6 +28,13 @@ fun retrofit(): Retrofit {
         .addConverterFactory(ScalarsConverterFactory.create())
         .addConverterFactory(MoshiConverterFactory.create().asLenient())
         .build()
+}
+
+fun Fragment.UserDAO(): UserDAO {
+    val database = Room.databaseBuilder(context!!,
+        AppDatabase::class.java,"info_user")
+        .build()
+    return database.getUserInfo()
 }
 
 fun AppCompatActivity.UserDAO(): UserDAO {

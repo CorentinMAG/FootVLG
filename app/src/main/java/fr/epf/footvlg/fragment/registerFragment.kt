@@ -1,48 +1,64 @@
-package fr.epf.footvlg
+package fr.epf.footvlg.fragment
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.MenuItem
+import android.view.*
+import androidx.fragment.app.Fragment
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import fr.epf.footvlg.API.APIService
+
+import fr.epf.footvlg.R
+import fr.epf.footvlg.interfaces.NavigationHost
 import fr.epf.footvlg.models.Member
 import fr.epf.footvlg.utils.UserDAO
 import fr.epf.footvlg.utils.hashString
 import fr.epf.footvlg.utils.retrofit
-import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.fragment_register.*
+import kotlinx.android.synthetic.main.fragment_register.view.*
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-//cette activité est appelé par LoginActivity
-
-class RegisterActivity : AppCompatActivity() {
-
+class registerFragment : Fragment() {
     lateinit var encryptPassword:String
 
+    //enable options menu in this fragment
     override fun onCreate(savedInstanceState: Bundle?) {
+        setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
+    }
+    //inflate the menu
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_main, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+    //handle item clicks of menu
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        //get item id to handle item clicks
+        val id = item.itemId
+        //handle item clicks
+        if (id == R.id.back_button){
+            (activity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
 
-        // affiche l'icone retour en arrière
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        }
 
-        validate_registration.setOnClickListener {
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        // Inflate the layout for this fragment
+        val view = inflater.inflate(R.layout.fragment_register, container, false)
+
+        view.validate_registration.setOnClickListener {
             VALIDATEData()
         }
+        return view
     }
-    override fun onOptionsItemSelected(item: MenuItem) =
-        when (item.itemId) {
-            // si on clique sur l'icone retour en arrière on termine l'activité
-            android.R.id.home -> {
-                finish()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
 
     private fun VALIDATEData(){
         val last_nameTEXT = last_name.text.toString().trim()
@@ -92,7 +108,7 @@ class RegisterActivity : AppCompatActivity() {
 
         else{
             if(checkPassword(passwordTEXT,password_confirmTEXT)){
-                Toast.makeText(this,"Création du compte...",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Création du compte...", Toast.LENGTH_SHORT).show()
                 val member = Member(0,last_nameTEXT,first_nameTEXT,phoneTEXT,emailTEXT,birthdayTEXT,encryptPassword)
                 REGISTERMember(member)
             }
@@ -101,13 +117,13 @@ class RegisterActivity : AppCompatActivity() {
 
     }
 
-    private fun REGISTERMember(member:Member){
+    private fun REGISTERMember(member: Member){
         val apiService = retrofit().create(APIService::class.java)
         val requestCall = apiService.createMember(member)
 
-        requestCall.enqueue(object: Callback<String>{
+        requestCall.enqueue(object: Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(applicationContext,"Erreur",Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Erreur", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
@@ -117,18 +133,20 @@ class RegisterActivity : AppCompatActivity() {
                         val count = UserDAO.CheckUser()
                         if(count==0){
                             UserDAO.addUser(member)
-                            Toast.makeText(applicationContext,"${response.body()}",Toast.LENGTH_SHORT).show()
-                            finish()
+                            (activity as NavigationHost).navigateTo(mainFragment(), false) // Navigate to the next Fragment
                         }else if(count==1){
-                            Toast.makeText(applicationContext,"Il existe déjà un utilisateur dans la base locale, veuillez le supprimer et recommencer cette étape",Toast.LENGTH_LONG).show()
+                            Toast.makeText(context,"Il existe déjà un utilisateur dans la base locale, veuillez le supprimer et recommencer cette étape",
+                                Toast.LENGTH_LONG).show()
                         }else{
-                            Toast.makeText(applicationContext,"Erreur, il existe plusieurs utilisateurs dans la base locale",Toast.LENGTH_LONG).show()
+                            Toast.makeText(context,"Erreur, il existe plusieurs utilisateurs dans la base locale",
+                                Toast.LENGTH_LONG).show()
                         }
                     }
                 }else{
                     Email.error = "ce numéro et/ou cet email est déjà pris"
                     phoneNumber.error = "ce numéro et/ou cet email est déjà pris"
-                    Toast.makeText(applicationContext,"Le compte ne peut être créé car il existe déjà un utilisateur dans la base de données",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,"Le compte ne peut être créé car il existe déjà un utilisateur dans la base de données",
+                        Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -172,4 +190,5 @@ class RegisterActivity : AppCompatActivity() {
             return true
         }
     }
+
 }
