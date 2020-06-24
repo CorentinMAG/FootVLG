@@ -78,32 +78,32 @@ class registerFragment : Fragment() {
             TextUtils.isEmpty(password_confirmTEXT)){
 
             if(TextUtils.isEmpty(last_nameTEXT)){
-                last_name.error = "Ce champ ne peut pas être vide"
+                last_name.error = getString(R.string.emptyField)
             }
             if(TextUtils.isEmpty(first_nameTEXT)){
-                first_name.error = "Ce champ ne peut pas être vide"
+                first_name.error = getString(R.string.emptyField)
             }
             if(TextUtils.isEmpty(emailTEXT)){
-                Email.error = "Ce champ ne peut pas être vide"
+                Email.error = getString(R.string.emptyField)
             }
             if(TextUtils.isEmpty(phoneTEXT)){
-                phoneNumber.error = "Ce champ ne peut pas être vide"
+                phoneNumber.error = getString(R.string.emptyField)
             }
             if(TextUtils.isEmpty(birthdayTEXT)){
-                birthday.error = "Ce champ ne peut pas être vide"
+                birthday.error = getString(R.string.emptyField)
             }
             if(TextUtils.isEmpty(passwordTEXT)){
-                password.error = "Ce champ ne peut pas être vide"
+                password.error = getString(R.string.emptyField)
             }
             if(TextUtils.isEmpty(password_confirmTEXT)){
-                password2.error = "Ce champ ne peut pas être vide"
+                password2.error = getString(R.string.emptyField)
             }
         }
         else if(!isEmailValid(emailTEXT)){
-            Email.error = "L'adresse email n'est pas valide"
+            Email.error = getString(R.string.invalidEmail)
         }
         else if(!isValidBirthday(birthdayTEXT)){
-            birthday.error = "La date doit être au format dd/mm/yyyy"
+            birthday.error = getString(R.string.dateFormat)
         }
 
         else{

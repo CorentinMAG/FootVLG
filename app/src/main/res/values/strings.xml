@@ -13,7 +13,9 @@
     <string name="confirm_PasswordText">Répéter le mot de passe</string>
     <string name="Validate">Valider</string>
     <string name="back">Retour</string>
+    <string name="emptyField">Ce champ ne peut pas être vide</string>
+    <string name="invalidEmail">L\'adresse email n\'est pas valide</string>
+    <string name="dateFormat">La date doit être au format dd/mm/yyyy</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -9,7 +9,7 @@ import fr.epf.footvlg.models.Member
 @Dao
 interface UserDAO {
     @Query("select * from userInfo")
-    suspend fun getUser():Member
+    suspend fun getUser():Member?
 
     @Insert
     suspend fun addUser(user: Member)
