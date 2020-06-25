@@ -1,9 +1,6 @@
 package fr.epf.footvlg.BDD.DAO
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import fr.epf.footvlg.models.Member
 
 @Dao
@@ -19,4 +16,8 @@ interface UserDAO {
 
     @Query("select count(*) from userInfo")
     suspend fun CheckUser(): Int
+
+    @Update
+    suspend fun updateUser(user:Member)
+
 }

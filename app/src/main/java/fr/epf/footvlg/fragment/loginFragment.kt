@@ -26,7 +26,6 @@ import retrofit2.Response
 class loginFragment : Fragment() {
     lateinit var user: Member
     val apiService = retrofit().create(APIService::class.java)
-    var bool:Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,17 +50,16 @@ class loginFragment : Fragment() {
 
         return view
     }
-    private fun checkUserCredentials(email:String,password:String):Boolean{
+    private fun checkUserCredentials(email:String,password:String):Unit{
         val requestCall = apiService.checkMemberManually(email,password)
 
         requestCall.enqueue(object: Callback<String> {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Toast.makeText(context,"Erreur", Toast.LENGTH_SHORT).show()
-                bool = false
             }
 
             override fun onResponse(call: Call<String>, response: Response<String>) {
-                bool = response.isSuccessful
+                val bool = response.isSuccessful
                 if(bool){
                     Toast.makeText(context,"${response.body()}", Toast.LENGTH_SHORT).show()
                     (activity as NavigationHost).navigateTo(mainFragment(), false) // Navigate to the next Fragment
@@ -72,10 +70,7 @@ class loginFragment : Fragment() {
                 }
             }
         })
-        return bool
     }
-
-
 }
 
 
