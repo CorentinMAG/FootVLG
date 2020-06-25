@@ -67,23 +67,22 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/loginButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="@string/loginButton"
-                    android:textAllCaps="true"
-                    android:textSize="20dp" />
+                    android:layout_marginRight="10dp"
+                    android:textAllCaps="true" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/registerButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="@string/registerButton"
-                    android:textAllCaps="true"
-                    android:textSize="20dp" />
+                    android:textAllCaps="true" />
 
             </LinearLayout>
         </LinearLayout>

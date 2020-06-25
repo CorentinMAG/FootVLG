@@ -13,7 +13,7 @@ data class Member (
      val phone_number:String,
      val email:String,
      val birthday:String,
-     val password:String,
+     val password:String="",
      val is_admin:Boolean=false,
      val is_superuser:Boolean=false
 )

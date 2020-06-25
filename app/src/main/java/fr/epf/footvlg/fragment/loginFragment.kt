@@ -15,6 +15,7 @@ import fr.epf.footvlg.interfaces.NavigationHost
 import fr.epf.footvlg.models.Member
 import fr.epf.footvlg.utils.UserDAO
 import fr.epf.footvlg.utils.retrofit
+import kotlinx.android.synthetic.main.activity_login.view.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.coroutines.runBlocking
@@ -27,12 +28,14 @@ class loginFragment : Fragment() {
     lateinit var user: Member
     val apiService = retrofit().create(APIService::class.java)
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_login, container, false)
+
 
         //le click sur le bouton S'ENREGISTRER lance le fragment pour enregistrer une personne
         view.registerButton.setOnClickListener {

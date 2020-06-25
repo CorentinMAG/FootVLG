@@ -143,12 +143,12 @@
             android:orientation="horizontal"
             android:layout_height="wrap_content">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/validate_registration"
                 android:layout_width="wrap_content"
                 android:textAllCaps="true"
                 android:layout_height="wrap_content"
-                android:text="@string/Validate"/>
+                android:text="@string/Validate" />
 
         </LinearLayout>
 

@@ -6,18 +6,18 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import fr.epf.footvlg.API.APIService
-import fr.epf.footvlg.fragment.loaderFragment
-import fr.epf.footvlg.fragment.loginFragment
-import fr.epf.footvlg.fragment.mainFragment
+import fr.epf.footvlg.fragment.*
 import fr.epf.footvlg.interfaces.NavigationHost
 import fr.epf.footvlg.models.Member
 import fr.epf.footvlg.utils.UserDAO
 import fr.epf.footvlg.utils.retrofit
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.runBlocking
 import retrofit2.Call
 import retrofit2.Callback
@@ -32,6 +32,26 @@ class LoginActivity : AppCompatActivity(), NavigationHost {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        bottom_navigation.setSelectedItemId(R.id.home)
+
+        bottom_navigation.setOnNavigationItemSelectedListener {
+            when(it.itemId){
+                R.id.account -> {
+                    (this as NavigationHost).navigateTo(AccountFragment(), false)
+                    true
+                } // Navigate to the next Fragment,
+                R.id.home ->{
+                    (this as NavigationHost).navigateTo(HomeFragment(), false)
+                    true
+                } // Navigate to the next Fragment,,
+                R.id.groups ->{
+                    (this as NavigationHost).navigateTo(GroupsFragment(), false)
+                    true
+                } // Navigate to the next Fragment,
+                else -> super.onOptionsItemSelected(it)
+            }
+        }
 
         //on charge le loader fragment pour faire patienter l'utilisateur
         (this@LoginActivity as NavigationHost).navigateTo(loaderFragment(), false)
@@ -82,6 +102,7 @@ class LoginActivity : AppCompatActivity(), NavigationHost {
      * le propriétaire du téléphone est directement redirigé vers la page d'accueil.
      */
     private fun checkUserCredentialsBDD(){
+        (this@LoginActivity as NavigationHost).navigateTo(loaderFragment(), false)
         val UserDAO = UserDAO()
         runBlocking {
             user = UserDAO.getUser()
@@ -91,20 +112,14 @@ class LoginActivity : AppCompatActivity(), NavigationHost {
             requestCall.enqueue(object: Callback<String> {
                 override fun onFailure(call: Call<String>, t: Throwable) {
                     Toast.makeText(this@LoginActivity,"Erreur", Toast.LENGTH_SHORT).show()
-                    supportFragmentManager
-                        .beginTransaction()
-                        .add(R.id.container, loginFragment())
-                        .commit()
+                    (this@LoginActivity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
                 }
                 override fun onResponse(call: Call<String>, response: Response<String>) {
                     bool = response.isSuccessful
                     if(bool){
                         (this@LoginActivity as NavigationHost).navigateTo(mainFragment(), false) // Navigate to the next Fragment
                     }else{
-                        supportFragmentManager
-                            .beginTransaction()
-                            .add(R.id.container, loginFragment())
-                            .commit()
+                        (this@LoginActivity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
                     }
                 }
             })
