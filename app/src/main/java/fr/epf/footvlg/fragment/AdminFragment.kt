@@ -45,7 +45,7 @@ class AdminFragment : Fragment() {
 
         requestCall.enqueue(object: Callback<List<Member>> {
             override fun onFailure(call: Call<List<Member>>, t: Throwable) {
-                Toast.makeText(context,"Erreur ${t}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,"Erreur", Toast.LENGTH_SHORT).show()
             }
 
             override fun onResponse(call: Call<List<Member>>, response: Response<List<Member>>) {

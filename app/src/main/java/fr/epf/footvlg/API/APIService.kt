@@ -36,4 +36,7 @@ interface APIService{
 
     @POST("getAllUsers.php")
     fun getAllUsers(@Body member:Member):Call<List<Member>>
+
+    @POST("changeUserAdmin.php")
+    fun toggleAdminState(@Body member:Member):Call<String>
 }
