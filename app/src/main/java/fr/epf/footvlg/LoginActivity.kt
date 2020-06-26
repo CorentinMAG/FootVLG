@@ -36,6 +36,9 @@ class LoginActivity : AppCompatActivity(), NavigationHost {
 
         bottom_navigation.setSelectedItemId(R.id.home)
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setHomeButtonEnabled(false)
+
         bottom_navigation.setOnNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.account -> {

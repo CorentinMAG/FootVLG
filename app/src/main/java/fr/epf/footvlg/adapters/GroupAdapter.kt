@@ -10,7 +10,7 @@ import fr.epf.footvlg.R
 import fr.epf.footvlg.models.Group
 import kotlinx.android.synthetic.main.group_view.view.*
 
-class GroupAdapter (val groups:List<Group>):RecyclerView.Adapter<GroupAdapter.GroupViewHolder>(){
+class GroupAdapter (val groups:List<Group>,val listener:(Group) ->Unit):RecyclerView.Adapter<GroupAdapter.GroupViewHolder>(){
     class GroupViewHolder(val groupView: View):RecyclerView.ViewHolder(groupView)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
@@ -27,6 +27,7 @@ class GroupAdapter (val groups:List<Group>):RecyclerView.Adapter<GroupAdapter.Gr
         holder.groupView.creation_date_group.text = group.creation_date
 
         holder.groupView.setOnClickListener {
+            listener(group)
             Toast.makeText(holder.groupView.context,"${group.groupName}",Toast.LENGTH_SHORT).show()
         }
     }

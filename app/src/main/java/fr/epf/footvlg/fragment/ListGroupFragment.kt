@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import fr.epf.footvlg.R
 import fr.epf.footvlg.adapters.GroupAdapter
+import fr.epf.footvlg.interfaces.NavigationHost
 import fr.epf.footvlg.models.Group
 import kotlinx.android.synthetic.main.fragment_list_group.view.*
 
@@ -29,7 +30,15 @@ class ListGroupFragment : Fragment() {
         view.list_groups.layoutManager = LinearLayoutManager(activity,
            LinearLayoutManager.VERTICAL,false)
 
-        view.list_groups.adapter = ListGroups?.let { GroupAdapter(it) }
+        view.list_groups.adapter = ListGroups?.let {
+            GroupAdapter(it){
+                val frag = ManageGroupFragment()
+                val bundle = Bundle()
+                bundle.putParcelable("group",it)
+                frag.arguments = bundle
+                (activity as NavigationHost).navigateTo(frag, false) // Navigate to the next Fragment
+            }
+        }
         return view
     }
 }

@@ -5,6 +5,7 @@ import android.text.TextUtils
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import fr.epf.footvlg.API.APIService
 
 import fr.epf.footvlg.R
@@ -29,23 +30,18 @@ class registerFragment : Fragment() {
         setHasOptionsMenu(true)
         super.onCreate(savedInstanceState)
     }
-    //inflate the menu
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-    //handle item clicks of menu
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //get item id to handle item clicks
-        val id = item.itemId
-        //handle item clicks
-        if (id == R.id.back_button){
-            (activity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
-
+        super.onOptionsItemSelected(item)
+        when(item.itemId){
+            android.R.id.home ->{
+                (activity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
+                return true
+            }
+            else -> return false
         }
-
-        return super.onOptionsItemSelected(item)
     }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,6 +50,9 @@ class registerFragment : Fragment() {
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_register, container, false)
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setHomeButtonEnabled(true)
 
         view.validate_registration.setOnClickListener {
             VALIDATEData()

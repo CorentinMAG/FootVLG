@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import fr.epf.footvlg.API.APIService
 
 import fr.epf.footvlg.R
@@ -37,6 +38,9 @@ class GroupsFragment : Fragment() {
                 .replace(R.id.group_container,loaderFragment())
                 .commit()
         }
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.setHomeButtonEnabled(false)
 
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_groups, container, false)

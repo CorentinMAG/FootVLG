@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import fr.epf.footvlg.API.APIService
 
 import fr.epf.footvlg.R
@@ -35,6 +36,10 @@ class AccountFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.setHomeButtonEnabled(false)
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_account, container, false)
         runBlocking {

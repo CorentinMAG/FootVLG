@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.util.Log
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.snackbar.Snackbar
 import fr.epf.footvlg.API.APIService
@@ -34,28 +35,28 @@ class CreateGroupFragment : Fragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-    //inflate the menu
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_main, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+
     //handle item clicks of menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        //get item id to handle item clicks
-        val id = item.itemId
-        //handle item clicks
-        if (id == R.id.back_button){
-            (activity as NavigationHost).navigateTo(GroupsFragment(), false) // Navigate to the next Fragment
-
+        super.onOptionsItemSelected(item)
+        when(item.itemId){
+            android.R.id.home -> {
+                (activity as NavigationHost).navigateTo(GroupsFragment(), false) // Navigate to the next Fragment
+                return true
+            }
+            else -> return false
         }
 
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.setHomeButtonEnabled(true)
+
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_create_group, container, false)
 
