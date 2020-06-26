@@ -1,7 +1,6 @@
 package fr.epf.footvlg.fragment
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +18,10 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
-class GroupsFragment : Fragment() {
+class AdminFragment : Fragment() {
     private val apiService = retrofit().create(APIService::class.java)
     private lateinit var user: Member
-    private var ListGroups:List<Group> = emptyList()
+    private var ListUsers:List<Member> = emptyList()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,49 +31,45 @@ class GroupsFragment : Fragment() {
         if(savedInstanceState ==null){
             childFragmentManager
                 .beginTransaction()
-                .replace(R.id.mycontainer,CreateAndJoinGroupFragment())
-                .replace(R.id.group_container,loaderFragment())
+                .replace(R.id.admin_container,loaderFragment())
                 .commit()
         }
-
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_groups, container, false)
-
+        val view =  inflater.inflate(R.layout.fragment_admin, container, false)
 
         runBlocking {
             user = UserDAO().getUser()!!
         }
 
-        val requestCall = apiService.getUserGroups(user)
+        val requestCall = apiService.getAllUsers(user)
 
-        requestCall.enqueue(object: Callback<List<Group>> {
-            override fun onFailure(call: Call<List<Group>>, t: Throwable) {
+        requestCall.enqueue(object: Callback<List<Member>> {
+            override fun onFailure(call: Call<List<Member>>, t: Throwable) {
                 Toast.makeText(context,"Erreur ${t}", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onResponse(call: Call<List<Group>>, response: Response<List<Group>>) {
+            override fun onResponse(call: Call<List<Member>>, response: Response<List<Member>>) {
                 val bool = response.isSuccessful
                 if(bool){
                     if(response.body()?.size!! >0){
-                        ListGroups = response.body()!!
+                        ListUsers = response.body()!!
 
                         //on charge le fragment en lui passant
-                        // la liste des groupes en paramètres
-                        val frag = ListGroupFragment()
+                        // la liste des Members en paramètres
+                        val frag = ListUsersAdminFragment()
                         val bundle = Bundle()
-                        bundle.putParcelableArrayList("groups",ArrayList(ListGroups))
+                        bundle.putParcelableArrayList("users",ArrayList(ListUsers))
                         frag.arguments = bundle
 
                         childFragmentManager
                             .beginTransaction()
-                            .replace(R.id.group_container,frag)
+                            .replace(R.id.admin_container,frag)
                             .commit()
                     }else{
                         childFragmentManager
                             .beginTransaction()
-                            .replace(R.id.group_container,NoGroupFragment())
+                            .replace(R.id.admin_container,NoUserFragment())
                             .commit()
-
                     }
                 }else{
                     Toast.makeText(context,"Erreur, base de données incomplète", Toast.LENGTH_SHORT).show()

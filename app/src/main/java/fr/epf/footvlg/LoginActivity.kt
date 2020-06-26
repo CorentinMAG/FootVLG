@@ -6,7 +6,7 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.view.Menu
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
@@ -24,9 +24,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), NavigationHost {
-    var user:Member?=null
+    var userLocal:Member?=null
     val apiService = retrofit().create(APIService::class.java)
     var bool:Boolean = false
+    var userDistant:Member?=null
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,18 +106,22 @@ class LoginActivity : AppCompatActivity(), NavigationHost {
         (this@LoginActivity as NavigationHost).navigateTo(loaderFragment(), false)
         val UserDAO = UserDAO()
         runBlocking {
-            user = UserDAO.getUser()
+            userLocal = UserDAO.getUser()
         }
-        if(user!=null){
-            val requestCall = apiService.checkMember(user!!)
-            requestCall.enqueue(object: Callback<String> {
-                override fun onFailure(call: Call<String>, t: Throwable) {
+        if(userLocal!=null){
+            val requestCall = apiService.checkMember(userLocal!!)
+            requestCall.enqueue(object: Callback<Member> {
+                override fun onFailure(call: Call<Member>, t: Throwable) {
                     Toast.makeText(this@LoginActivity,"Erreur", Toast.LENGTH_SHORT).show()
                     (this@LoginActivity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
                 }
-                override fun onResponse(call: Call<String>, response: Response<String>) {
+                override fun onResponse(call: Call<Member>, response: Response<Member>) {
                     bool = response.isSuccessful
                     if(bool){
+                        userDistant = response.body()
+                        runBlocking {
+                            userDistant?.let { UserDAO().updateUser(it) }
+                        }
                         (this@LoginActivity as NavigationHost).navigateTo(mainFragment(), false) // Navigate to the next Fragment
                     }else{
                         (this@LoginActivity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
@@ -126,6 +131,5 @@ class LoginActivity : AppCompatActivity(), NavigationHost {
         }else{
             (this@LoginActivity as NavigationHost).navigateTo(loginFragment(), false) // Navigate to the next Fragment
         }
-
     }
 }

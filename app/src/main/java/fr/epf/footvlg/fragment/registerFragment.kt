@@ -22,6 +22,7 @@ import retrofit2.Response
 
 class registerFragment : Fragment() {
     lateinit var encryptPassword:String
+     var user:Member? = null
 
     //enable options menu in this fragment
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,28 +113,33 @@ class registerFragment : Fragment() {
                 val member = Member(0,last_nameTEXT,first_nameTEXT,phoneTEXT,emailTEXT,birthdayTEXT,encryptPassword)
                 REGISTERMember(member)
             }
-
         }
-
     }
 
     private fun REGISTERMember(member: Member){
         val apiService = retrofit().create(APIService::class.java)
         val requestCall = apiService.createMember(member)
 
-        requestCall.enqueue(object: Callback<String> {
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Toast.makeText(context,"Erreur", Toast.LENGTH_SHORT).show()
+        requestCall.enqueue(object: Callback<Member> {
+            override fun onFailure(call: Call<Member>, t: Throwable) {
+                Toast.makeText(context,"Erreur ${t}", Toast.LENGTH_SHORT).show()
             }
 
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+            override fun onResponse(call: Call<Member>, response: Response<Member>) {
                 if(response.isSuccessful){
                     val UserDAO = UserDAO()
                     runBlocking {
                         val count = UserDAO.CheckUser()
                         if(count==0){
-                            UserDAO.addUser(member)
-                            (activity as NavigationHost).navigateTo(mainFragment(), false) // Navigate to the next Fragment
+                            user = response.body()
+                            if(user!=null){
+                                UserDAO.addUser(user!!)
+                                (activity as NavigationHost).navigateTo(mainFragment(), false) // Navigate to the next Fragment
+                            }else{
+                                Toast.makeText(context,"Impossible de créer un utilisateur",
+                                    Toast.LENGTH_LONG).show()
+                            }
+
                         }else if(count==1){
                             Toast.makeText(context,"Il existe déjà un utilisateur dans la base locale, veuillez le supprimer et recommencer cette étape",
                                 Toast.LENGTH_LONG).show()
@@ -157,7 +163,7 @@ class registerFragment : Fragment() {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
     private fun isValidBirthday(birthday:String):Boolean{
-        val regex="^[0-9]{2}/[0-9]{2}/[0-9]{4}$"
+        val regex="^[0-9]{4}-[0-9]{2}-[0-9]{2}$"
         return regex.toRegex().matches(birthday)
     }
     private fun isPasswordValid(password:String):Boolean{

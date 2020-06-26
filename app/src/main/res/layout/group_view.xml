@@ -4,22 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_margin="8dp"
+    android:focusable="true"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
+        android:padding="10dp"
+        android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/client_image_view"
-            android:layout_width="50dp"
-            android:layout_height="50dp"/>
         <TextView
-            android:layout_marginLeft="8dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginStart="8dp"
             tools:text="toto"
             android:layout_gravity="center_vertical"
             android:id="@+id/group_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:gravity="end"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="10sp"
+                android:text="Date de création : "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textSize="10sp"
+                android:id="@+id/creation_date_group"
+                tools:text="10/10/1997"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -9,16 +9,20 @@
     <string name="last_nameText">Nom</string>
     <string name="first_nameText">Prénom</string>
     <string name="phone_numberText">Numéro de téléphone</string>
-    <string name="birthdayText">Date de naissance (dd/mm/YYYY)</string>
+    <string name="birthdayText">Date de naissance (AAAA-mm-jj)</string>
     <string name="confirm_PasswordText">Répéter le mot de passe</string>
     <string name="Validate">Valider</string>
     <string name="back">Retour</string>
     <string name="emptyField">Ce champ ne peut pas être vide</string>
     <string name="invalidEmail">L\'adresse email n\'est pas valide</string>
-    <string name="dateFormat">La date doit être au format dd/mm/yyyy</string>
+    <string name="dateFormat">La date doit être au format AAAA-mm-jj</string>
     <string name="createGroup">Créer un groupe</string>
     <string name="joinGroup">Rejoindre un groupe</string>
     <string name="joinCode">code</string>
+    <string name="noGroup">Pas de groupes</string>
+    <string name="noUsers">Pas d\'utilisateurs</string>
+    <string name="changePasswordText">Changer de mot de passe</string>
+    <string name="Update">Mettre à jour</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

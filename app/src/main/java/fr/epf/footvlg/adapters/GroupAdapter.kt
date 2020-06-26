@@ -3,6 +3,8 @@ package fr.epf.footvlg.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.content.contentValuesOf
 import androidx.recyclerview.widget.RecyclerView
 import fr.epf.footvlg.R
 import fr.epf.footvlg.models.Group
@@ -22,5 +24,10 @@ class GroupAdapter (val groups:List<Group>):RecyclerView.Adapter<GroupAdapter.Gr
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
        val group = groups[position]
         holder.groupView.group_name.text = group.groupName
+        holder.groupView.creation_date_group.text = group.creation_date
+
+        holder.groupView.setOnClickListener {
+            Toast.makeText(holder.groupView.context,"${group.groupName}",Toast.LENGTH_SHORT).show()
+        }
     }
 }
