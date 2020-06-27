@@ -28,7 +28,6 @@ class GroupAdapter (val groups:List<Group>,val listener:(Group) ->Unit):Recycler
 
         holder.groupView.setOnClickListener {
             listener(group)
-            Toast.makeText(holder.groupView.context,"${group.groupName}",Toast.LENGTH_SHORT).show()
         }
     }
 }

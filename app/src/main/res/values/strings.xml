@@ -23,6 +23,9 @@
     <string name="noUsers">Pas d\'utilisateurs</string>
     <string name="changePasswordText">Changer de mot de passe</string>
     <string name="Update">Mettre à jour</string>
+    <string name="tab_a_label">Info</string>
+    <string name="tab_b_label">Evènements</string>
+    <string name="tab_c_label">Membres</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

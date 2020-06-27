@@ -7,14 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import fr.epf.footvlg.R
+import fr.epf.footvlg.adapters.ViewPagerAdapter
+import fr.epf.footvlg.fragment.TabsFragment.EventsFragment
+import fr.epf.footvlg.fragment.TabsFragment.InfoFragment
+import fr.epf.footvlg.fragment.TabsFragment.MemberFragment
 import fr.epf.footvlg.interfaces.NavigationHost
 import fr.epf.footvlg.models.Group
+import kotlinx.android.synthetic.main.fragment_manage_group.*
 import kotlinx.android.synthetic.main.fragment_manage_group.view.*
 
 
 class ManageGroupFragment : Fragment() {
     private var group: Group?=null
+    private lateinit var viewPager: ViewPager
+    private lateinit var MyPageAdapter:ViewPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +41,28 @@ class ManageGroupFragment : Fragment() {
         (activity as AppCompatActivity).supportActionBar?.setHomeButtonEnabled(true)
         val view = inflater.inflate(R.layout.fragment_manage_group, container, false)
 
-        view.test.text = group?.groupName
+        viewPager = view.pager
+
+        MyPageAdapter = ViewPagerAdapter(childFragmentManager)
+        viewPager.adapter = MyPageAdapter
+        MyPageAdapter.addFragment(InfoFragment(),"Info")
+        MyPageAdapter.addFragment(EventsFragment(),"Evènement")
+
+        val membersFrag = MemberFragment()
+        val bundle =Bundle()
+        bundle.putParcelableArrayList("GroupMembers", group?.members?.let { ArrayList(it) })
+        membersFrag.arguments = bundle
+        MyPageAdapter.addFragment(membersFrag,"Members")
+        (viewPager.adapter as ViewPagerAdapter).notifyDataSetChanged()
+
+        view.tabs.setupWithViewPager(viewPager)
+
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
